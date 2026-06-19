@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gonzalo Morales — Análisis, digitalización y automatización de procesos</title>
+<meta name="description" content="Consultor que analiza procesos de negocio, los rediseña y los convierte en software que funciona. Creador de Ordee.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Inter:wght@400;450;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0d1117;          /* azul-pizarra muy oscuro, no negro puro */
+    --bg-2:#121a24;
+    --panel:#161f2b;
+    --line:#243140;
+    --line-soft:#1c2733;
+    --ink:#e9eef4;
+    --ink-soft:#aebaccc0;
+    --muted:#7d8da0;
+    --amber:#e0a458;        /* acento ámbar/dorado, no neón */
+    --amber-soft:#c8924a;
+    --teal:#5db3a3;         /* secundario frío, uso muy puntual */
+    --disp:'Space Grotesk', system-ui, sans-serif;
+    --body:'Inter', system-ui, sans-serif;
+    --mono:'JetBrains Mono', ui-monospace, Menlo, monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);color:var(--ink);font-family:var(--body);
+    line-height:1.6;font-size:16.5px;-webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(900px 500px at 80% -10%, #16212f 0%, transparent 60%);
+    background-attachment:fixed;
+  }
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 30px}
+
+  /* ---------- NAV ---------- */
+  header{position:sticky;top:0;z-index:60;background:rgba(13,17,23,.82);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  .bar{display:flex;align-items:center;justify-content:space-between;height:66px;gap:20px}
+  .logo{font-family:var(--mono);font-size:14px;font-weight:500;letter-spacing:.02em;white-space:nowrap}
+  .logo .dot{color:var(--amber)}
+  nav.links{display:flex;gap:4px;flex:1;justify-content:center}
+  nav.links a{font-family:var(--mono);font-size:12.5px;color:var(--muted);padding:8px 13px;border-radius:5px;transition:.16s;letter-spacing:.01em}
+  nav.links a:hover{color:var(--ink);background:var(--panel)}
+  .bar-right{display:flex;align-items:center;gap:12px}
+  .nav-cta{font-family:var(--mono);font-size:12.5px;color:var(--bg);background:var(--amber);padding:9px 16px;border-radius:6px;font-weight:500;transition:.16s;white-space:nowrap}
+  .nav-cta:hover{background:#eeb56a}
+  .lang{font-family:var(--mono);font-size:12px;border:1px solid var(--line);border-radius:6px;display:flex;overflow:hidden;cursor:pointer}
+  .lang span{padding:7px 10px;color:var(--muted);transition:.16s}
+  .lang span.on{background:var(--panel);color:var(--amber)}
+
+  /* ---------- HERO ---------- */
+  .hero{padding:92px 0 70px;border-bottom:1px solid var(--line)}
+  .term{
+    font-family:var(--mono);font-size:13px;color:var(--teal);margin-bottom:26px;
+    display:inline-flex;align-items:center;gap:9px;border:1px solid var(--line);
+    background:var(--bg-2);padding:7px 14px;border-radius:7px
+  }
+  .term .blink{width:7px;height:14px;background:var(--amber);display:inline-block;animation:blink 1.2s steps(2) infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+  .hero h1{font-family:var(--disp);font-weight:600;font-size:clamp(33px,5.6vw,60px);line-height:1.06;letter-spacing:-.025em;max-width:18ch}
+  .hero h1 .hl{color:var(--amber)}
+  .hero p.lede{margin-top:24px;font-size:clamp(16.5px,2vw,20px);max-width:56ch;color:var(--ink-soft)}
+  .hero .cta{margin-top:36px;display:flex;gap:13px;flex-wrap:wrap}
+  .btn{font-family:var(--mono);font-size:13px;padding:13px 22px;border-radius:7px;transition:.16s;cursor:pointer;display:inline-block;letter-spacing:.01em}
+  .btn-fill{background:var(--amber);color:var(--bg);font-weight:500}
+  .btn-fill:hover{background:#eeb56a;transform:translateY(-1px)}
+  .btn-line{border:1px solid var(--line);color:var(--ink)}
+  .btn-line:hover{border-color:var(--amber);color:var(--amber)}
+
+  .metrics{margin-top:54px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+  .metric{background:var(--bg-2);padding:22px 24px}
+  .metric .v{font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);color:var(--ink);line-height:1.1}
+  .metric .v em{font-style:normal;color:var(--amber)}
+  .metric .k{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+
+  /* ---------- SECTION SCAFFOLD ---------- */
+  section[id]{scroll-margin-top:80px}
+  .section{padding:84px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:42px}
+  .sec-tag{font-family:var(--mono);font-size:12px;color:var(--amber);white-space:nowrap}
+  .sec-tag::before{content:"# ";color:var(--muted)}
+  h2{font-family:var(--disp);font-weight:600;font-size:clamp(24px,3.4vw,34px);letter-spacing:-.02em;line-height:1.12;color:var(--ink)}
+  .sec-sub{color:var(--muted);max-width:60ch;margin-top:-30px;margin-bottom:42px;font-size:15.5px}
+
+  /* ---------- APPROACH ---------- */
+  .loop{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .step{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px 22px;transition:.18s}
+  .step:hover{border-color:var(--amber-soft);transform:translateY(-3px)}
+  .step .num{font-family:var(--mono);font-size:12px;color:var(--amber);margin-bottom:16px}
+  .step h3{font-family:var(--disp);font-weight:600;font-size:19px;margin-bottom:8px}
+  .step p{font-size:14px;color:var(--ink-soft)}
+
+  /* ---------- CASE STUDIES ---------- */
+  .case{background:var(--panel);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:24px}
+  .case-top{padding:30px 32px 26px;border-bottom:1px solid var(--line-soft);background:linear-gradient(180deg,#18222f,transparent)}
+  .case-kind{font-family:var(--mono);font-size:11.5px;color:var(--teal);margin-bottom:14px;display:flex;align-items:center;gap:8px}
+  .case-kind .badge{border:1px solid var(--line);border-radius:5px;padding:2px 8px;color:var(--muted)}
+  .case h3.title{font-family:var(--disp);font-weight:700;font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;margin-bottom:10px}
+  .case .snap{font-size:16.5px;color:var(--ink-soft);max-width:62ch}
+  .case .snap em{font-style:normal;color:var(--amber);font-weight:500}
+  .case-meta{font-family:var(--mono);font-size:12px;color:var(--muted);margin-top:16px}
+
+  .case-body{padding:14px 32px 30px}
+  .csr{display:grid;grid-template-columns:140px 1fr;gap:0 28px;padding:20px 0;border-bottom:1px solid var(--line-soft)}
+  .csr .k{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--amber);padding-top:3px}
+  .csr .vv{color:var(--ink-soft);font-size:15.5px;max-width:62ch}
+  .csr .vv strong{color:var(--ink);font-weight:600}
+  .case-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:9px;overflow:hidden;margin:24px 0}
+  .cstat{background:var(--bg-2);padding:20px 18px}
+  .cstat .big{font-family:var(--disp);font-weight:700;font-size:clamp(19px,2.4vw,26px);color:var(--amber);line-height:1.05}
+  .cstat .lbl{font-family:var(--mono);font-size:10.5px;color:var(--muted);margin-top:9px;line-height:1.4}
+  .tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
+  .tag{font-family:var(--mono);font-size:11px;border:1px solid var(--line);color:var(--ink-soft);padding:5px 10px;border-radius:999px}
+  .case-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:26px}
+
+  /* ---------- SERVICES ---------- */
+  .svc{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+  .scard{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:28px 26px;transition:.18s;position:relative}
+  .scard:hover{border-color:var(--amber-soft)}
+  .scard .k{font-family:var(--mono);font-size:11px;color:var(--amber);letter-spacing:.06em;margin-bottom:13px}
+  .scard h3{font-family:var(--disp);font-weight:600;font-size:20px;margin-bottom:9px}
+  .scard p{font-size:14.5px;color:var(--ink-soft)}
+  .scard.wip{border-style:dashed;opacity:.92}
+  .scard.wip .k{color:var(--teal)}
+
+  /* ---------- CATALOG ---------- */
+  .catalog{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .proj{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:24px 22px;transition:.18s}
+  .proj:hover{transform:translateY(-3px);border-color:var(--amber-soft)}
+  .proj .pk{font-family:var(--mono);font-size:11px;color:var(--teal);margin-bottom:13px}
+  .proj h3{font-family:var(--disp);font-weight:600;font-size:18px;margin-bottom:8px}
+  .proj p{font-size:13.5px;color:var(--ink-soft)}
+
+  /* ---------- STACK ---------- */
+  .stack-list{display:flex;flex-wrap:wrap;gap:10px}
+  .chip{font-family:var(--mono);font-size:12.5px;border:1px solid var(--line);padding:9px 15px;border-radius:7px;background:var(--panel);color:var(--ink-soft)}
+  .chip.wip{opacity:.6;border-style:dashed}
+  .chip.wip small{color:var(--amber)}
+
+  /* ---------- CONTACT ---------- */
+  .contact{padding:92px 0}
+  .contact h2{margin-bottom:16px}
+  .contact p{color:var(--muted);max-width:52ch;margin-bottom:32px;font-size:16px}
+  .contact .cta{display:flex;gap:13px;flex-wrap:wrap}
+
+  footer{border-top:1px solid var(--line);padding:30px 0;font-family:var(--mono);font-size:12px;color:var(--muted)}
+  footer .wrap{display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+
+  .en{display:none}
+  body.lang-en .es{display:none}
+  body.lang-en .en{display:inline}
+
+  @media(max-width:900px){
+    nav.links{display:none}
+    .loop{grid-template-columns:1fr 1fr}
+    .svc{grid-template-columns:1fr}
+    .catalog{grid-template-columns:1fr}
+  }
+  @media(max-width:620px){
+    .metrics{grid-template-columns:1fr}
+    .loop{grid-template-columns:1fr}
+    .case-stats{grid-template-columns:1fr}
+    .csr{grid-template-columns:1fr;gap:6px}
+    .csr .k{padding-top:0}
+    .case-top,.case-body{padding-left:22px;padding-right:22px}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+</style>
+</head>
+<body class="lang-es">
+
+<header>
+  <div class="wrap bar">
+    <div class="logo">gonzalo<span class="dot">.</span>morales <span style="color:var(--muted)">~/procesos</span></div>
+    <nav class="links">
+      <a href="#metodo"><span class="es">método</span><span class="en">method</span></a>
+      <a href="#casos"><span class="es">casos</span><span class="en">cases</span></a>
+      <a href="#servicios"><span class="es">servicios</span><span class="en">services</span></a>
+      <a href="#stack">stack</a>
+    </nav>
+    <div class="bar-right">
+      <a class="nav-cta" href="#contacto"><span class="es">Agendar llamada</span><span class="en">Book a call</span></a>
+      <div class="lang" id="langToggle" role="button" tabindex="0" aria-label="ES / EN"><span class="on" data-l="es">ES</span><span data-l="en">EN</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="wrap">
+    <div class="term"><span class="es">analista funcional · desarrollador · consultor de procesos</span><span class="en">functional analyst · developer · process consultant</span><span class="blink"></span></div>
+    <h1>
+      <span class="es">Encuentro el <span class="hl">cuello de botella</span>, y construyo lo que lo elimina.</span>
+      <span class="en">I find the <span class="hl">bottleneck</span>, then I build the thing that removes it.</span>
+    </h1>
+    <p class="lede">
+      <span class="es">Analizo procesos de negocio, los rediseño y los convierto en software que tu equipo realmente usa. No entrego diagnósticos en PDF: entrego sistemas que funcionan.</span>
+      <span class="en">I analyze business processes, redesign them, and turn them into software your team actually uses. I don't hand over PDF diagnostics — I ship working systems.</span>
+    </p>
+    <div class="cta">
+      <a class="btn btn-fill" href="#contacto"><span class="es">Agendar una llamada</span><span class="en">Book a call</span></a>
+      <a class="btn btn-line" href="#casos"><span class="es">Ver casos</span><span class="en">See cases</span></a>
+    </div>
+    <div class="metrics">
+      <div class="metric"><div class="v">15min <em>→</em> &lt;1min</div><div class="k"><span class="es">tiempo para armar un pedido (Ordee)</span><span class="en">time to build an order (Ordee)</span></div></div>
+      <div class="metric"><div class="v"><em>~93%</em></div><div class="k"><span class="es">menos tiempo por pedido</span><span class="en">less time per order</span></div></div>
+      <div class="metric"><div class="v"><em>2</em></div><div class="k"><span class="es">productos reales en producción</span><span class="en">real products shipped</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- METHOD -->
+<section class="section" id="metodo">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">método</span><span class="en">method</span></span>
+      <h2><span class="es">De la planilla caótica al sistema que se opera solo.</span><span class="en">From the chaotic spreadsheet to a system that runs itself.</span></h2>
+    </div>
+    <div class="loop">
+      <div class="step"><div class="num">01</div><h3><span class="es">Analizar</span><span class="en">Analyze</span></h3><p><span class="es">Mapeo cómo funciona hoy de verdad: dónde se pierde tiempo, dónde se rompe, qué se hace a mano.</span><span class="en">I map how it works today: where time leaks, where it breaks, what's done by hand.</span></p></div>
+      <div class="step"><div class="num">02</div><h3><span class="es">Mejorar</span><span class="en">Improve</span></h3><p><span class="es">Rediseño el flujo antes de tocar código. La mejor automatización es el paso que se elimina.</span><span class="en">I redesign the flow before touching code. The best automation is the step you delete.</span></p></div>
+      <div class="step"><div class="num">03</div><h3><span class="es">Digitalizar</span><span class="en">Digitize</span></h3><p><span class="es">Construyo la herramienta: web app, panel o catálogo a medida del equipo.</span><span class="en">I build the tool: web app, dashboard, or catalog built around the team.</span></p></div>
+      <div class="step"><div class="num">04</div><h3><span class="es">Operar</span><span class="en">Run</span></h3><p><span class="es">Lo dejo funcionando con datos confiables, listo para escalar sin trabajo extra.</span><span class="en">I leave it running on reliable data, ready to scale with no extra work.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CASES -->
+<section class="section" id="casos">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">casos</span><span class="en">cases</span></span>
+      <h2><span class="es">Problemas reales, resueltos con software.</span><span class="en">Real problems, solved with software.</span></h2>
+    </div>
+
+    <!-- ORDEE -->
+    <div class="case">
+      <div class="case-top">
+        <div class="case-kind"><span class="es">Producto propio</span><span class="en">Own product</span> <span class="badge">SaaS B2B</span></div>
+        <h3 class="title">Ordee</h3>
+        <p class="snap"><span class="es">Reduje el armado de un pedido de recompra de <em>15 minutos en Excel a menos de 1 minuto</em>, con seguimiento de estados.</span><span class="en">I cut building a reorder from <em>15 minutes in Excel to under 1 minute</em>, with status tracking.</span></p>
+        <div class="case-meta">CHULA · <span class="es">marca de accesorios · corredor Cancún–Tulum, México · piloto validado</span><span class="en">accessories brand · Cancún–Tulum corridor, Mexico · validated pilot</span></div>
+      </div>
+      <div class="case-body">
+        <div class="csr"><div class="k"><span class="es">Contexto</span><span class="en">Context</span></div><div class="vv"><span class="es">CHULA maneja la recompra de mercadería entre sus puntos de venta y la marca central. El pedido se armaba en Excel: lento, propenso a errores de precio y sin forma de saber el estado de cada pedido.</span><span class="en">CHULA manages restocking between its points of sale and the central brand. Orders were built in Excel: slow, prone to price errors, with no way to know each order's status.</span></div></div>
+        <div class="csr"><div class="k"><span class="es">Desafío</span><span class="en">Challenge</span></div><div class="vv"><span class="es">Cada pedido tomaba unos <strong>15 minutos</strong> de carga manual. El precio podía cambiar entre el pedido y la facturación, y no había trazabilidad del estado.</span><span class="en">Each order took about <strong>15 minutes</strong> of manual entry. Prices shifted between order and invoice, with no status traceability.</span></div></div>
+        <div class="csr"><div class="k"><span class="es">Acción</span><span class="en">Action</span></div><div class="vv"><span class="es">Construí <strong>Ordee</strong>: catálogo central, carrito que <strong>congela el precio al momento del pedido</strong>, <strong>seguimiento de estados</strong>, control por roles y exportación a Excel/PDF.</span><span class="en">I built <strong>Ordee</strong>: central catalog, a cart that <strong>freezes the price at order time</strong>, <strong>status tracking</strong>, role-based controls, and Excel/PDF export.</span></div></div>
+        <div class="case-stats">
+          <div class="cstat"><div class="big">15 → &lt;1 min</div><div class="lbl"><span class="es">para armar un pedido</span><span class="en">to build an order</span></div></div>
+          <div class="cstat"><div class="big">~93%</div><div class="lbl"><span class="es">menos tiempo por pedido</span><span class="en">less time per order</span></div></div>
+          <div class="cstat"><div class="big">100%</div><div class="lbl"><span class="es">pedidos con precio fijo y estado visible</span><span class="en">orders with locked price & visible status</span></div></div>
+        </div>
+        <div class="csr" style="border-bottom:none"><div class="k"><span class="es">Resultado</span><span class="en">Result</span></div><div class="vv"><span class="es">El armado pasó de 15 minutos a menos de uno, sin disputas de precio y con seguimiento de punta a punta. La marca lo validó en piloto; Ordee queda listo para escalar a más puntos de venta.</span><span class="en">Order building went from 15 minutes to under one, with no price disputes and end-to-end tracking. The brand validated it in a pilot; Ordee is ready to scale to more locations.</span></div></div>
+        <div class="tags">
+          <span class="tag">React · TanStack</span><span class="tag">Supabase · Postgres · RLS</span><span class="tag">Vercel</span>
+          <span class="tag"><span class="es">Precio congelado</span><span class="en">Price freeze</span></span><span class="tag"><span class="es">Seguimiento de estados</span><span class="en">Status tracking</span></span>
+        </div>
+        <div class="case-cta">
+          <a class="btn btn-fill" href="https://chula-alpha.vercel.app" target="_blank" rel="noopener"><span class="es">Ver demo en vivo</span><span class="en">View live demo</span></a>
+          <a class="btn btn-line" href="#contacto"><span class="es">Quiero algo así</span><span class="en">I want this</span></a>
+        </div>
+      </div>
+    </div>
+
+    <!-- CLASSICS -->
+    <div class="case">
+      <div class="case-top">
+        <div class="case-kind"><span class="es">Proyecto para cliente</span><span class="en">Client project</span> <span class="badge"><span class="es">Catálogo web</span><span class="en">Web catalog</span></span></div>
+        <h3 class="title">Classics Catalogue</h3>
+        <p class="snap"><span class="es">Un coleccionista perdía oportunidades explicando su stock de cero cada vez. Le di <em>un catálogo que comparte en un link</em> — y dejó de repetirse.</span><span class="en">A collector kept losing deals re-explaining his stock from scratch. I gave him <em>one catalog he shares in a link</em> — and stopped repeating himself.</span></p>
+        <div class="case-meta">Fernando Llames — Classic &amp; Custom Auto · <span class="es">compra-venta de autos y partes clásicas y hot rod</span><span class="en">classic &amp; hot rod car and parts trading</span></div>
+      </div>
+      <div class="case-body">
+        <div class="csr"><div class="k"><span class="es">Contexto</span><span class="en">Context</span></div><div class="vv"><span class="es">Fernando compra y vende autos clásicos, hot rods y partes. Su stock vivía disperso —fotos en el teléfono, notas, mensajes— y en cada evento tenía que explicar de cero qué tenía y en qué estado.</span><span class="en">Fernando buys and sells classic cars, hot rods and parts. His stock lived scattered — phone photos, notes, messages — and at every event he explained from scratch what he had and its condition.</span></div></div>
+        <div class="csr"><div class="k"><span class="es">Desafío</span><span class="en">Challenge</span></div><div class="vv"><span class="es">No tenía forma de <strong>consolidar y difundir</strong> su inventario. Cada oportunidad arrancaba explicando todo otra vez, sin un lugar único y compartible.</span><span class="en">He had no way to <strong>consolidate and share</strong> his inventory. Every opportunity started by explaining everything again, with no single shareable place.</span></div></div>
+        <div class="csr"><div class="k"><span class="es">Acción</span><span class="en">Action</span></div><div class="vv"><span class="es">Construí <strong>Classics Catalogue</strong>: carga cada pieza con fotos, la marca como <strong>reservado, vendido o destacado</strong>, y recibe <strong>consultas directas</strong> desde la ficha. Todo en un link que comparte en eventos.</span><span class="en">I built <strong>Classics Catalogue</strong>: he lists each piece with photos, flags it <strong>reserved, sold or featured</strong>, and gets <strong>direct inquiries</strong> from the listing. All in one link he shares at events.</span></div></div>
+        <div class="case-stats">
+          <div class="cstat"><div class="big"><span class="es">1 link</span><span class="en">1 link</span></div><div class="lbl"><span class="es">todo el stock, consolidado y compartible</span><span class="en">all stock, consolidated & shareable</span></div></div>
+          <div class="cstat"><div class="big">0</div><div class="lbl"><span class="es">explicaciones repetidas por oportunidad</span><span class="en">repeated pitches per opportunity</span></div></div>
+          <div class="cstat"><div class="big"><span class="es">Estados</span><span class="en">Status</span></div><div class="lbl"><span class="es">reservado · vendido · destacado, en vivo</span><span class="en">reserved · sold · featured, live</span></div></div>
+        </div>
+        <div class="csr" style="border-bottom:none"><div class="k"><span class="es">Resultado</span><span class="en">Result</span></div><div class="vv"><span class="es">Fernando dejó de explicar su inventario de memoria: abre un link y muestra todo, con disponibilidad y estado al día. Difunde su stock en eventos en segundos y recibe consultas directo desde el catálogo.</span><span class="en">Fernando stopped explaining his inventory from memory: he opens a link and shows everything, status up to date. He spreads his stock at events in seconds and gets inquiries straight from the catalog.</span></div></div>
+        <div class="tags">
+          <span class="tag">React · TanStack</span><span class="tag">Supabase · Postgres · RLS</span><span class="tag">Vercel</span>
+          <span class="tag"><span class="es">Reservado / vendido / destacado</span><span class="en">Reserved / sold / featured</span></span><span class="tag"><span class="es">Consultas directas</span><span class="en">Direct inquiries</span></span>
+        </div>
+        <div class="case-cta">
+          <a class="btn btn-fill" href="https://fer-llames.vercel.app/" target="_blank" rel="noopener"><span class="es">Ver demo en vivo</span><span class="en">View live demo</span></a>
+          <a class="btn btn-line" href="#contacto"><span class="es">Quiero algo así</span><span class="en">I want this</span></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="servicios">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">servicios</span><span class="en">services</span></span>
+      <h2><span class="es">Para empresas que saben que algo está lento — pero no qué.</span><span class="en">For companies that know something is slow — but not what.</span></h2>
+    </div>
+    <div class="svc">
+      <div class="scard"><div class="k"><span class="es">DIAGNÓSTICO</span><span class="en">DIAGNOSIS</span></div><h3><span class="es">Análisis de procesos</span><span class="en">Process analysis</span></h3><p><span class="es">Relevo el proceso end-to-end, identifico cuellos de botella, retrabajo y riesgos, y propongo un plan priorizado por impacto.</span><span class="en">I map the end-to-end process, spot bottlenecks, rework and risks, and propose a plan prioritized by impact.</span></p></div>
+      <div class="scard"><div class="k"><span class="es">REDISEÑO</span><span class="en">REDESIGN</span></div><h3><span class="es">Digitalización a medida</span><span class="en">Custom digitization</span></h3><p><span class="es">Rediseño del flujo y construcción de la herramienta que lo soporta: apps web, paneles, catálogos, formularios.</span><span class="en">Flow redesign plus the digital tool behind it: web apps, dashboards, catalogs, forms.</span></p></div>
+      <div class="scard"><div class="k"><span class="es">ERP & QA</span><span class="en">ERP & QA</span></div><h3><span class="es">Análisis funcional & testing</span><span class="en">Functional analysis & testing</span></h3><p><span class="es">Experiencia como analista funcional SAP/PRA y QA: requerimientos, casos de prueba y validación de sistemas.</span><span class="en">Background as SAP/PRA functional analyst and QA: requirements, test cases, system validation.</span></p></div>
+      <div class="scard wip"><div class="k"><span class="es">EN DESARROLLO</span><span class="en">GROWING</span></div><h3><span class="es">Automatización</span><span class="en">Automation</span></h3><p><span class="es">Estoy incorporando integración vía APIs y automatización con Python para eliminar tareas repetitivas. Si tu proyecto lo necesita, lo charlamos con franqueza sobre alcance y tiempos.</span><span class="en">I'm adding API integration and Python automation to eliminate repetitive work. If your project needs it, we'll talk openly about scope and timing.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOG -->
+<section class="section" id="catalogo">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">trabajos</span><span class="en">work</span></span>
+      <h2><span class="es">Otras cosas que construí.</span><span class="en">Other things I built.</span></h2>
+    </div>
+    <div class="catalog">
+      <div class="proj"><div class="pk">SaaS B2B</div><h3>Ordee</h3><p><span class="es">Gestión de recompra para redes de franquicias. Catálogo, carrito con precio congelado, seguimiento de estados, export Excel/PDF.</span><span class="en">Reorder management for franchise networks. Catalog, price-frozen cart, status tracking, Excel/PDF export.</span></p></div>
+      <div class="proj"><div class="pk"><span class="es">CATÁLOGO WEB</span><span class="en">WEB CATALOG</span></div><h3>Classics Catalogue</h3><p><span class="es">Catálogo personal de autos y partes clásicas: estados reservado/vendido/destacado y consultas directas, todo en un link.</span><span class="en">Personal catalog of classic cars and parts: reserved/sold/featured status and direct inquiries, all in one link.</span></p></div>
+      <div class="proj"><div class="pk">EdTech</div><h3><span class="es">App de inglés A2</span><span class="en">A2 English app</span></h3><p><span class="es">App interactiva (gramática, fonética y juegos) en un único HTML, con persistencia local.</span><span class="en">Interactive learning app (grammar, phonetics, games) in a single HTML file with local persistence.</span></p></div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section class="section" id="stack">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag">stack</span>
+      <h2><span class="es">Las herramientas con las que trabajo.</span><span class="en">The tools I work with.</span></h2>
+    </div>
+    <div class="stack-list">
+      <span class="chip">React</span><span class="chip">TanStack</span><span class="chip">TypeScript</span>
+      <span class="chip">Supabase</span><span class="chip">PostgreSQL</span><span class="chip">Vercel</span>
+      <span class="chip">SAP / PRA</span><span class="chip">QA / Testing</span><span class="chip">Excel / VBA</span>
+      <span class="chip">Git</span><span class="chip wip">Python <small>· <span class="es">en desarrollo</span><span class="en">growing</span></small></span>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contacto">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">contacto</span><span class="en">contact</span></span>
+      <h2><span class="es">¿Tenés un proceso que duele? Charlemos 20 minutos.</span><span class="en">Got a process that hurts? Let's talk for 20 minutes.</span></h2>
+    </div>
+    <p><span class="es">Trabajo remoto desde Argentina con clientes en toda LATAM. Contame qué estás resolviendo y en una llamada te digo si puedo ayudarte — sin vueltas.</span><span class="en">I work remotely from Argentina with clients across LATAM. Tell me what you're solving and I'll tell you on a call whether I can help — no fluff.</span></p>
+    <div class="cta">
+      <a class="btn btn-fill" href="https://calendly.com/gonzaloam1" target="_blank" rel="noopener"><span class="es">Agendar una llamada</span><span class="en">Book a call</span></a>
+      <a class="btn btn-line" href="https://wa.me/5491134607560" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="btn btn-line" href="https://github.com/Gonzaloam2134" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <span>© 2026 Gonzalo Morales · Buenos Aires, Argentina</span>
+    <span class="es">Procesos · Digitalización · Software a medida</span>
+    <span class="en">Process · Digitization · Custom software</span>
+  </div>
+</footer>
+
+<script>
+  const t = document.getElementById('langToggle');
+  function setLang(l){
+    document.body.classList.toggle('lang-en', l==='en');
+    document.documentElement.lang = l;
+    t.querySelectorAll('span').forEach(s=>s.classList.toggle('on', s.dataset.l===l));
+  }
+  t.addEventListener('click', ()=>{
+    setLang(document.body.classList.contains('lang-en')?'es':'en');
+  });
+  t.addEventListener('keydown', e=>{ if(e.key==='Enter'||e.key===' '){e.preventDefault();t.click();} });
+</script>
+</body>
+</html>
