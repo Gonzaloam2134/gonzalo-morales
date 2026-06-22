@@ -72,9 +72,25 @@
 
   .metrics{margin-top:54px;display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line);border-radius:10px;overflow:hidden}
   .metric{background:var(--bg-2);padding:22px 24px}
-  .metric .v{font-family:var(--disp);font-weight:600;font-size:clamp(22px,3vw,30px);color:var(--ink);line-height:1.1}
+  .metric .v{font-family:var(--disp);font-weight:600;font-size:clamp(19px,2.2vw,23px);color:var(--amber);line-height:1.15}
   .metric .v em{font-style:normal;color:var(--amber)}
-  .metric .k{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:9px;line-height:1.45}
+  .metric .k{font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:11px;line-height:1.5}
+
+  /* ---------- TIMELINE / EXPERIENCE ---------- */
+  .timeline{display:grid;gap:14px;margin-top:8px}
+  .tl-item{background:var(--bg-2);border:1px solid var(--line);border-radius:10px;padding:22px 24px;display:grid;grid-template-columns:160px 1fr;gap:0 26px;transition:.18s}
+  .tl-item:hover{border-color:var(--amber-soft)}
+  .tl-when{font-family:var(--mono);font-size:12.5px;color:var(--amber);padding-top:3px}
+  .tl-role{font-family:var(--disp);font-weight:600;font-size:17px;color:var(--ink);margin-bottom:7px;grid-column:2}
+  .tl-desc{font-size:14px;color:var(--ink-soft);line-height:1.55;grid-column:2}
+  .translator{margin-top:22px;padding:26px 28px;background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--amber);border-radius:10px}
+  .translator .tr-title{font-family:var(--disp);font-weight:600;font-size:19px;margin-bottom:11px;color:var(--ink)}
+  .translator p{font-size:15px;color:var(--ink-soft);max-width:64ch;line-height:1.6}
+  @media(max-width:620px){
+    .tl-item{grid-template-columns:1fr;gap:8px}
+    .tl-role,.tl-desc{grid-column:1}
+    .tl-when{padding-top:0}
+  }
 
   /* ---------- SECTION SCAFFOLD ---------- */
   section[id]{scroll-margin-top:80px}
@@ -177,6 +193,7 @@
   <div class="wrap bar">
     <div class="logo">gonzalo<span class="dot">.</span>morales <span style="color:var(--muted)">~/procesos</span></div>
     <nav class="links">
+      <a href="#experiencia"><span class="es">trayectoria</span><span class="en">background</span></a>
       <a href="#metodo"><span class="es">método</span><span class="en">method</span></a>
       <a href="#casos"><span class="es">casos</span><span class="en">cases</span></a>
       <a href="#servicios"><span class="es">servicios</span><span class="en">services</span></a>
@@ -198,18 +215,65 @@
       <span class="en">I find the <span class="hl">bottleneck</span>, then I build the thing that removes it.</span>
     </h1>
     <p class="lede">
-      <span class="es">Analizo procesos de negocio, los rediseño y los convierto en software que tu equipo realmente usa. No entrego diagnósticos en PDF: entrego sistemas que funcionan.</span>
-      <span class="en">I analyze business processes, redesign them, and turn them into software your team actually uses. I don't hand over PDF diagnostics — I ship working systems.</span>
+      <span class="es">Analizo, diseño y construyo soluciones a medida. Tomo el proceso que hoy vive en planillas y mensajes, y lo convierto en software que tu equipo realmente usa — no entrego diagnósticos en PDF, entrego sistemas que funcionan.</span>
+      <span class="en">I analyze, design and build custom solutions. I take the process that today lives in spreadsheets and messages and turn it into software your team actually uses — I don't hand over PDF diagnostics, I ship working systems.</span>
     </p>
     <div class="cta">
       <a class="btn btn-fill" href="#contacto"><span class="es">Agendar una llamada</span><span class="en">Book a call</span></a>
       <a class="btn btn-line" href="#casos"><span class="es">Ver casos</span><span class="en">See cases</span></a>
     </div>
     <div class="metrics">
-      <div class="metric"><div class="v">15min <em>→</em> &lt;1min</div><div class="k"><span class="es">tiempo para armar un pedido (Ordee)</span><span class="en">time to build an order (Ordee)</span></div></div>
-      <div class="metric"><div class="v"><em>~93%</em></div><div class="k"><span class="es">menos tiempo por pedido</span><span class="en">less time per order</span></div></div>
-      <div class="metric"><div class="v"><em>2</em></div><div class="k"><span class="es">productos reales en producción</span><span class="en">real products shipped</span></div></div>
+      <div class="metric"><div class="v"><span class="es">Analizo</span><span class="en">Analyze</span></div><div class="k"><span class="es">relevo tu proceso end-to-end y encuentro dónde se pierde tiempo y plata</span><span class="en">I map your end-to-end process and find where time and money leak</span></div></div>
+      <div class="metric"><div class="v"><span class="es">Construyo</span><span class="en">Build</span></div><div class="k"><span class="es">desarrollo la app web a medida que lo resuelve, lista para usar</span><span class="en">I build the custom web app that solves it, ready to use</span></div></div>
+      <div class="metric"><div class="v">SAP · QA</div><div class="k"><span class="es">respaldo de analista funcional y testing en ERP reales</span><span class="en">backed by functional analyst & QA experience on real ERPs</span></div></div>
     </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section class="section" id="experiencia" style="background:linear-gradient(180deg,var(--panel),transparent)">
+  <div class="wrap">
+    <div class="sec-head">
+      <span class="sec-tag"><span class="es">trayectoria</span><span class="en">background</span></span>
+      <h2><span class="es">20 años traduciendo entre IT y negocio.</span><span class="en">20 years translating between IT and business.</span></h2>
+    </div>
+    <p class="sec-sub" style="max-width:66ch">
+      <span class="es">No soy ingeniero de software ni tengo un MBA. Soy el puente entre los que construyen el sistema y los que lo usan — alguien que pasó 20 años en ambos mundos y entiende qué necesita IT para entregar y qué necesita el negocio para operar. Por eso veo problemas que otros consultores no ven.</span>
+      <span class="en">I'm not a software engineer, and I don't have an MBA. I'm the bridge between those who build the system and those who use it — someone who spent 20 years in both worlds and understands what IT needs to deliver and what the business needs to operate. That's why I spot problems other consultants miss.</span>
+    </p>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-when">2006 — 2012</div>
+        <div class="tl-role">IBM · Help Desk → Account Coordinator</div>
+        <div class="tl-desc"><span class="es">Soporte para Unilever, BP y otras cuentas grandes. Crecí a coordinar los representantes de cuenta, asegurar políticas de cliente y QA de llamadas. Construí un sistema de macros en Excel para recuperación de costos: de un desfasaje de ~$30M a $3–5M/año.</span><span class="en">Support for Unilever, BP and other major accounts. Grew into coordinating account reps, enforcing client policies and call QA. Built an Excel macro system for cost recovery: from a ~$30M gap down to $3–5M/year.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-when">2012 — 2016</div>
+        <div class="tl-role">SAP PRA Analyst · BP <span class="es">(Oil &amp; Gas)</span><span class="en">(Oil &amp; Gas)</span></div>
+        <div class="tl-desc"><span class="es">Forecasts, reportes y la transición a SAP Fiori. Viajé a Houston y Londres para aprender los roles y asegurar que las horas facturables se cargaran y enviaran correctamente al equipo de billing.</span><span class="en">Forecasts, reports and the SAP Fiori transition. Traveled to Houston and London to learn the roles and make sure billable hours were logged and sent correctly to the billing team.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-when">2016 — 2021</div>
+        <div class="tl-role">Accenture · SAP PRA &amp; QA</div>
+        <div class="tl-desc"><span class="es">Analista funcional para Crescent Oil y nexo técnico entre el IT de Accenture y el cliente. Luego, QA para nuevos desarrollos en SAP, con foco en el módulo OTC (Order to Cash).</span><span class="en">Functional analyst for Crescent Oil and technical bridge between Accenture IT and the client. Then QA for new SAP developments, focused on the OTC (Order to Cash) module.</span></div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-when"><span class="es">2021 — Presente</span><span class="en">2021 — Present</span></div>
+        <div class="tl-role"><span class="es">Analista &amp; consultor independiente</span><span class="en">Analyst &amp; independent consultant</span></div>
+        <div class="tl-desc"><span class="es">SAP PRA para Chevron y QA del software propietario de stock y supply chain en EVA IV. En paralelo, analizo procesos y construyo soluciones a medida: Ordee (SaaS B2B) y Classics Catalogue.</span><span class="en">SAP PRA for Chevron and QA of proprietary stock & supply-chain software at EVA IV. In parallel, I analyze processes and build custom solutions: Ordee (B2B SaaS) and Classics Catalogue.</span></div>
+      </div>
+    </div>
+
+    <div class="translator">
+      <div class="tr-title"><span class="es">Tu traductor entre IT y negocio</span><span class="en">Your translator between IT and business</span></div>
+      <p><span class="es">No construyo apps porque sé programar. Las construyo porque entiendo qué proceso está roto, por qué, y exactamente qué herramienta lo arregla. Eso no se aprende en un curso — viene de 20 años viendo ambos lados.</span><span class="en">I don't build apps because I can code. I build them because I understand what process is broken, why, and exactly what tool fixes it. That isn't learned in a course — it comes from 20 years seeing both sides.</span></p>
+    </div>
+
+    <p style="font-family:var(--mono);font-size:11.5px;color:var(--muted);margin-top:18px">
+      <span class="es">⚠ Revisá los años de cada etapa — los estimé de memoria, ajustalos a tus fechas exactas.</span>
+      <span class="en">⚠ Check the years on each stage — I estimated them; adjust to your exact dates.</span>
+    </p>
   </div>
 </section>
 
@@ -260,7 +324,7 @@
           <span class="tag"><span class="es">Precio congelado</span><span class="en">Price freeze</span></span><span class="tag"><span class="es">Seguimiento de estados</span><span class="en">Status tracking</span></span>
         </div>
         <div class="case-cta">
-          <a class="btn btn-fill" href="https://chula-alpha.vercel.app" target="_blank" rel="noopener"><span class="es">Ver demo en vivo</span><span class="en">View live demo</span></a>
+          <a class="btn btn-fill" href="https://youtu.be/lTjOG1f5gTI" target="_blank" rel="noopener"><span class="es">▶ Ver demo en video</span><span class="en">▶ Watch demo video</span></a>
           <a class="btn btn-line" href="#contacto"><span class="es">Quiero algo así</span><span class="en">I want this</span></a>
         </div>
       </div>
@@ -272,7 +336,7 @@
         <div class="case-kind"><span class="es">Proyecto para cliente</span><span class="en">Client project</span> <span class="badge"><span class="es">Catálogo web</span><span class="en">Web catalog</span></span></div>
         <h3 class="title">Classics Catalogue</h3>
         <p class="snap"><span class="es">Un coleccionista perdía oportunidades explicando su stock de cero cada vez. Le di <em>un catálogo que comparte en un link</em> — y dejó de repetirse.</span><span class="en">A collector kept losing deals re-explaining his stock from scratch. I gave him <em>one catalog he shares in a link</em> — and stopped repeating himself.</span></p>
-        <div class="case-meta">Fernando Llames — Classic &amp; Custom Auto · <span class="es">compra-venta de autos y partes clásicas y hot rod</span><span class="en">classic &amp; hot rod car and parts trading</span></div>
+        <div class="case-meta">Fernando Llames — Classic &amp; Custom Auto · <span class="es">compra-venta de autos, partes clásicas y hot rod</span><span class="en">classic &amp; hot rod car and parts trading</span></div>
       </div>
       <div class="case-body">
         <div class="csr"><div class="k"><span class="es">Contexto</span><span class="en">Context</span></div><div class="vv"><span class="es">Fernando compra y vende autos clásicos, hot rods y partes. Su stock vivía disperso —fotos en el teléfono, notas, mensajes— y en cada evento tenía que explicar de cero qué tenía y en qué estado.</span><span class="en">Fernando buys and sells classic cars, hot rods and parts. His stock lived scattered — phone photos, notes, messages — and at every event he explained from scratch what he had and its condition.</span></div></div>
